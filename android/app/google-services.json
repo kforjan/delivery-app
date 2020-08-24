@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "104502612117",
+    "firebase_url": "https://delivery-app-97e3d.firebaseio.com",
+    "project_id": "delivery-app-97e3d",
+    "storage_bucket": "delivery-app-97e3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104502612117:android:c3274eab1e5a8db2f60b9c",
+        "android_client_info": {
+          "package_name": "com.ferit.delivery_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104502612117-ru9505humd31jscktn083bc82r7278h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9_IrzyAJGfGrjyo7YkZs4aOsAvYOReEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104502612117-ru9505humd31jscktn083bc82r7278h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
