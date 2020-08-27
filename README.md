@@ -1,2 +1,2 @@
 # delivery_app
-A FLutter app for ordering food and tracking the order!
+A Flutter app for ordering food and tracking the order!
