@@ -1,4 +1,4 @@
-import 'package:delivery_app/app/home/order/models/order.dart';
+import 'package:delivery_app/app/home/models/order.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -25,7 +25,6 @@ class OrderModel with ChangeNotifier {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     _updateWith(position: position);
-    print(position.toString());
     toggleLocatedStatus();
   }
 

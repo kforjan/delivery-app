@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:delivery_app/app/home/order/models/order.dart';
-
+import 'package:delivery_app/app/home/models/order.dart';
 import './api_path.dart';
 
 enum UserType {
@@ -12,6 +11,7 @@ abstract class Database {
   Future<void> addOrder(Order order);
   Future<void> addUserType(String userId, UserType userType);
   Stream<UserType> getUserTypeStream(String userId);
+  Stream<QuerySnapshot> getOrders();
 }
 
 class FirestoreDatabase implements Database {
@@ -47,5 +47,12 @@ class FirestoreDatabase implements Database {
   Future<void> addOrder(Order order) async {
     final instance = Firestore.instance.document(ApiPath.order(order.id));
     instance.setData(order.toMap());
+  }
+
+  @override
+  Stream<QuerySnapshot> getOrders() {
+    final instance =
+        Firestore.instance.collection(ApiPath.orders()).snapshots();
+    return instance;
   }
 }

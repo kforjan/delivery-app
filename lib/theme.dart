@@ -5,6 +5,7 @@ ThemeData buildTheme() {
     primaryColor: Color.fromRGBO(234, 84, 85, 1),
     accentColor: Color.fromRGBO(45, 64, 89, 1),
     splashColor: Color.fromRGBO(222, 205, 195, 1),
+    canvasColor: Color.fromRGBO(229, 229, 229, 1),
     textTheme: buildTextTheme(),
   );
 }

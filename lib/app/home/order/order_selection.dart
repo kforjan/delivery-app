@@ -119,7 +119,10 @@ Widget buildMap(BuildContext context, Position position) {
           Marker(
             width: 80.0,
             height: 80.0,
-            point: LatLng(position.latitude, position.longitude),
+            point: LatLng(
+              position.latitude,
+              position.longitude,
+            ),
             builder: (ctx) => Container(
               child: Icon(
                 Icons.location_on,

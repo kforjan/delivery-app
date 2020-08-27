@@ -13,7 +13,7 @@ class OrderPage extends StatelessWidget {
           left: 20,
           right: 20,
         ),
-        color: Color.fromRGBO(234, 84, 85, 1),
+        color: Theme.of(context).primaryColor,
         child: OrderSelection.create(),
       ),
     );
