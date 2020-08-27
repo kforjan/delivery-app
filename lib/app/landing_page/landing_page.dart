@@ -1,11 +1,10 @@
-import 'package:delivery_app/app/home/deliver/deliver_page.dart';
-import 'package:delivery_app/app/home/order/order_page.dart';
-import 'package:delivery_app/app/sign_in/deliver_button.dart';
-import 'package:delivery_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/auth.dart';
+import '../../services/database.dart';
+import '../home/deliver/deliver_page.dart';
+import '../home/order/order_page.dart';
 import '../sign_in/sign_in_page.dart';
 
 class LandingPage extends StatelessWidget {

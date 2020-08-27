@@ -1,7 +1,8 @@
-import 'package:delivery_app/services/auth.dart';
-import 'package:delivery_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../services/auth.dart';
+import '../../services/database.dart';
 
 class OrderButton extends StatelessWidget {
   final Function onTap;
@@ -22,7 +23,7 @@ class OrderButton extends StatelessWidget {
             .addUserType(user.userId, UserType.order);
       },
       child: Container(
-        color: Colors.orange,
+        color: Color.fromRGBO(234, 84, 85, 1),
         height: mediaQuery.size.height * 0.75,
         child: Center(
           child: Column(
@@ -31,11 +32,15 @@ class OrderButton extends StatelessWidget {
               Icon(
                 Icons.restaurant,
                 size: 50,
+                color: Color.fromRGBO(229, 229, 229, 1),
               ),
               SizedBox(height: 20),
               Text(
                 'I am here to order food.',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color.fromRGBO(229, 229, 229, 1),
+                ),
               ),
             ],
           ),

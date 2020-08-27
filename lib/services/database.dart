@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery_app/app/home/order/models/order.dart';
+
 import './api_path.dart';
 
 enum UserType {
@@ -7,8 +9,7 @@ enum UserType {
 }
 
 abstract class Database {
-  // Future<void> addFriend(String path, Friend friend);
-  // Future<void> removeFriend(String path, Friend friend);
+  Future<void> addOrder(Order order);
   Future<void> addUserType(String userId, UserType userType);
   Stream<UserType> getUserTypeStream(String userId);
 }
@@ -42,17 +43,9 @@ class FirestoreDatabase implements Database {
     return data['type'] == 'order' ? UserType.order : UserType.deliver;
   }
 
-  // @override
-  // Future<void> addFriend(String path, Friend friend) async {
-  //   final instance =
-  //       Firestore.instance.document(ApiPath.friend(userId, friend.id));
-  //   instance.setData(friend.toMap());
-  // }
-
-  // @override
-  // Future<void> removeFriend(String path, Friend friend) async {
-  //   final instance =
-  //       Firestore.instance.document(ApiPath.friend(userId, friend.id));
-  //   instance.delete();
-  // }
+  @override
+  Future<void> addOrder(Order order) async {
+    final instance = Firestore.instance.document(ApiPath.order(order.id));
+    instance.setData(order.toMap());
+  }
 }

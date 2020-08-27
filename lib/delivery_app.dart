@@ -1,9 +1,10 @@
-import 'package:delivery_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app/landing_page/landing_page.dart';
 import 'services/auth.dart';
+import 'services/database.dart';
+import 'theme.dart';
 
 class DeliveryApp extends StatelessWidget {
   @override
@@ -18,6 +19,7 @@ class DeliveryApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        theme: buildTheme(),
         title: 'DeliveyApp',
         home: Scaffold(
           body: Center(

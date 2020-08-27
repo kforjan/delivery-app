@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 import '../../services/auth.dart';
-import '../../constants/strings.dart';
 
 enum SignInFormType {
   signIn,
