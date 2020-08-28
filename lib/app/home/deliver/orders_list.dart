@@ -28,25 +28,38 @@ class OrdersList extends StatefulWidget {
 class _OrdersListState extends State<OrdersList> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (widget.model.position == null) {
       widget.model.updateLocation();
     }
     return StreamBuilder<QuerySnapshot>(
       stream: Provider.of<Database>(context).getOrders(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.data == null || widget.model.position == null) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.data.documents.isEmpty) {
-          return Center(
-            child: Text('There are no available orders at this time!'),
-          );
-        } else {
-          print(snapshot.data.documents[0].data);
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.data == null || widget.model.position == null) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
+              ),
+            );
+          } else if (snapshot.data.documents.isEmpty) {
+            return Center(
+              child: Text('There are no available orders at this time!'),
+            );
+          } else {
+            print(snapshot.data.documents[0].data);
 
-          return _buildListView(
-            snapshot.data.documents.map((e) => Order.fromMap(e.data)).toList(),
+            return _buildListView(
+              snapshot.data.documents
+                  .map((e) => Order.fromMap(e.data))
+                  .toList(),
+            );
+          }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
+            ),
           );
         }
       },

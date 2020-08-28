@@ -46,7 +46,9 @@ class ConfirmDeliveryScreen extends StatelessWidget {
             ),
             RaisedButton(
               color: theme.primaryColor,
-              onPressed: () {},
+              onPressed: () {
+                print(order.id);
+              },
               child: Text(
                 'START DELIVERY',
                 style: TextStyle(color: theme.textTheme.bodyText2.color),
@@ -101,7 +103,7 @@ class ConfirmDeliveryScreen extends StatelessWidget {
     return FlutterMap(
       options: MapOptions(
         center: LatLng(position.latitude, position.longitude),
-        zoom: 13.0,
+        zoom: 13.5,
       ),
       layers: [
         TileLayerOptions(
@@ -118,8 +120,8 @@ class ConfirmDeliveryScreen extends StatelessWidget {
               ),
               builder: (ctx) => Container(
                 child: Icon(
-                  Icons.location_on,
-                  color: Theme.of(context).accentColor,
+                  Icons.my_location,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),

@@ -32,71 +32,75 @@ class _OrderSelectionState extends State<OrderSelection> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            FoodSelection(
-              changeHandler: widget.model.updateMealCount,
-            ),
-            FoodSelection(
-              changeHandler: widget.model.updateSideMealCount,
-            ),
-            FoodSelection(
-              changeHandler: widget.model.updateDrinkCount,
-            ),
-          ],
-        ),
-        SizedBox(
-          height: mediaQuery.size.height * 0.05,
-        ),
-        ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(40)),
-          child: Container(
-            height: mediaQuery.size.height * 0.25,
-            width: mediaQuery.size.width * 0.6,
-            child: widget.model.located
-                ? buildMap(context, widget.model.position)
-                : FlatButton(
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.location_on,
-                        color: theme.accentColor,
-                      ),
-                      title: Text(
-                        'Find my location',
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText2.color,
+    return Container(
+      height: mediaQuery.size.height,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              FoodSelection(
+                changeHandler: widget.model.updateMealCount,
+              ),
+              FoodSelection(
+                changeHandler: widget.model.updateSideMealCount,
+              ),
+              FoodSelection(
+                changeHandler: widget.model.updateDrinkCount,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: mediaQuery.size.height * 0.05,
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+            child: Container(
+              height: mediaQuery.size.height * 0.25,
+              width: mediaQuery.size.width * 0.6,
+              child: widget.model.located
+                  ? buildMap(context, widget.model.position)
+                  : FlatButton(
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.location_on,
+                          color: theme.accentColor,
+                        ),
+                        title: Text(
+                          'Find my location',
+                          style: TextStyle(
+                            color: theme.textTheme.bodyText2.color,
+                          ),
                         ),
                       ),
+                      onPressed: () {
+                        widget.model.updateLocation();
+                      },
                     ),
-                    onPressed: () {
-                      widget.model.updateLocation();
-                    },
-                  ),
-          ),
-        ),
-        SizedBox(
-          height: mediaQuery.size.height * 0.05,
-        ),
-        RaisedButton(
-          color: theme.accentColor,
-          child: Text(
-            'Order now!',
-            style: TextStyle(
-              color: theme.textTheme.bodyText2.color,
-              fontSize: 18,
             ),
           ),
-          onPressed: widget.model.isOrderable()
-              ? () {
-                  Provider.of<Database>(context, listen: false)
-                      .addOrder(widget.model.generateOrder());
-                }
-              : null,
-        ),
-      ],
+          SizedBox(
+            height: mediaQuery.size.height * 0.05,
+          ),
+          RaisedButton(
+            color: theme.accentColor,
+            child: Text(
+              'Order now!',
+              style: TextStyle(
+                color: theme.textTheme.bodyText2.color,
+                fontSize: 18,
+              ),
+            ),
+            onPressed: widget.model.isOrderable()
+                ? () {
+                    Provider.of<Database>(context, listen: false)
+                        .addOrder(widget.model.generateOrder());
+                  }
+                : null,
+          ),
+        ],
+      ),
     );
   }
 
@@ -104,7 +108,7 @@ class _OrderSelectionState extends State<OrderSelection> {
     return FlutterMap(
       options: MapOptions(
         center: LatLng(position.latitude, position.longitude),
-        zoom: 13.0,
+        zoom: 13.5,
       ),
       layers: [
         TileLayerOptions(
@@ -121,7 +125,7 @@ class _OrderSelectionState extends State<OrderSelection> {
               ),
               builder: (ctx) => Container(
                 child: Icon(
-                  Icons.location_on,
+                  Icons.my_location,
                   color: Theme.of(context).accentColor,
                 ),
               ),

@@ -40,6 +40,7 @@ class OrderModel with ChangeNotifier {
   Order generateOrder() {
     return Order(
       id: DateTime.now().toIso8601String(),
+      isActive: false,
       mealCount: this.mealCount,
       sideMealCount: this.sideMealCount,
       drinkCount: this.drinkCount,
