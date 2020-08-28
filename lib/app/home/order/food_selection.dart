@@ -30,7 +30,7 @@ class _FoodSelectionState extends State<FoodSelection> {
           listViewWidth: mediaQuery.size.width * 0.15,
           initialValue: _currentValue,
           minValue: 0,
-          maxValue: 15,
+          maxValue: 10,
           onChanged: (value) {
             setState(() {
               _currentValue = value;

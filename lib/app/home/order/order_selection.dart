@@ -34,9 +34,6 @@ class _OrderSelectionState extends State<OrderSelection> {
     final mediaQuery = MediaQuery.of(context);
     return Column(
       children: [
-        SizedBox(
-          height: 50,
-        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -102,36 +99,36 @@ class _OrderSelectionState extends State<OrderSelection> {
       ],
     );
   }
-}
 
-Widget buildMap(BuildContext context, Position position) {
-  return FlutterMap(
-    options: MapOptions(
-      center: LatLng(position.latitude, position.longitude),
-      zoom: 13.0,
-    ),
-    layers: [
-      TileLayerOptions(
-          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ['a', 'b', 'c']),
-      MarkerLayerOptions(
-        markers: [
-          Marker(
-            width: 80.0,
-            height: 80.0,
-            point: LatLng(
-              position.latitude,
-              position.longitude,
-            ),
-            builder: (ctx) => Container(
-              child: Icon(
-                Icons.location_on,
-                color: Theme.of(context).accentColor,
+  Widget buildMap(BuildContext context, Position position) {
+    return FlutterMap(
+      options: MapOptions(
+        center: LatLng(position.latitude, position.longitude),
+        zoom: 13.0,
+      ),
+      layers: [
+        TileLayerOptions(
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            subdomains: ['a', 'b', 'c']),
+        MarkerLayerOptions(
+          markers: [
+            Marker(
+              width: 80.0,
+              height: 80.0,
+              point: LatLng(
+                position.latitude,
+                position.longitude,
+              ),
+              builder: (ctx) => Container(
+                child: Icon(
+                  Icons.location_on,
+                  color: Theme.of(context).accentColor,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    ],
-  );
+          ],
+        ),
+      ],
+    );
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:delivery_app/app/home/deliver/confirm_delivery_screen.dart';
 import 'package:delivery_app/app/home/deliver/deliver_model.dart';
 import 'package:delivery_app/app/home/models/order.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,16 @@ class OrderTile extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConfirmDeliveryScreen(
+                  order: order,
+                ),
+              ),
+            );
+          },
           subtitle: Text(
             'Main meals: ${order.mealCount} Side meals: ${order.sideMealCount} Drinks: ${order.drinkCount}',
             style: TextStyle(color: theme.textTheme.bodyText2.color),

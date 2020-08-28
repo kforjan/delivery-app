@@ -55,6 +55,7 @@ class _OrdersListState extends State<OrdersList> {
 
   Widget _buildListView(List<Order> orders) {
     return ListView.builder(
+      physics: BouncingScrollPhysics(),
       itemCount: orders.length,
       itemBuilder: (BuildContext context, int index) {
         return OrderTile(

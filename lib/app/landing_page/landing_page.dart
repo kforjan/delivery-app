@@ -20,8 +20,7 @@ class LandingPage extends StatelessWidget {
 
           if (_user == null) {
             return SignInPage.create(context);
-          }
-          if (_user != null)
+          } else {
             return StreamBuilder(
               stream: _databse.getUserTypeStream(_user.userId),
               builder: (context, snapshot) {
@@ -32,27 +31,35 @@ class LandingPage extends StatelessWidget {
                   } else if (snapshot.data == UserType.order) {
                     return OrderPage();
                   } else {
-                    return LoadingScreen();
+                    return _buildLoadingScreen(context);
                   }
                 } else {
-                  return LoadingScreen();
+                  return _buildLoadingScreen(context);
                 }
               },
             );
+          }
         } else {
-          return LoadingScreen();
+          return _buildLoadingScreen(context);
         }
       },
     );
   }
-}
 
-class LoadingScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildLoadingScreen(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 50),
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: Provider.of<AuthBase>(context).signOut,
+            )
+          ],
+        ),
       ),
     );
   }
