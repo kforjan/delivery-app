@@ -25,44 +25,58 @@ class LandingPage extends StatelessWidget {
             return StreamBuilder(
               stream: _databse.getUserTypeStream(_user.userId),
               builder: (context, typeSnapshot) {
-                print(typeSnapshot.data.toString() + '2');
-                if (typeSnapshot.connectionState == ConnectionState.active &&
-                    typeSnapshot.data != null) {
-                  print(typeSnapshot.data.toString() + '1');
-                  if (typeSnapshot.data == UserType.deliver) {
-                    return DeliverPage();
-                  } else if (typeSnapshot.data == UserType.order) {
-                    return OrderPage();
-                  } else {
-                    return _buildLoadingScreen(context, '1');
-                  }
+                if (typeSnapshot.data == UserType.deliver) {
+                  return DeliverPage();
+                } else if (typeSnapshot.data == UserType.order) {
+                  return OrderPage();
                 } else {
-                  return _buildLoadingScreen(context, '2');
+                  return _buildLoadingScreen(context);
                 }
               },
             );
           }
         } else {
-          return _buildLoadingScreen(context, '3');
+          return _buildLoadingScreen(context);
         }
       },
     );
   }
 
-  Widget _buildLoadingScreen(BuildContext context, String string) {
+  Widget _buildLoadingScreen(BuildContext context) {
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 50),
-            FlatButton(
-              child: Text('Cancel' + string),
-              onPressed: Provider.of<AuthBase>(context).signOut,
-            )
-          ],
-        ),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Container(
+            height: mediaQuery.size.height,
+            color: theme.primaryColor,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(theme.accentColor),
+                  ),
+                  const SizedBox(height: 50),
+                  FlatButton(
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: theme.accentColor),
+                    ),
+                    onPressed: Provider.of<AuthBase>(context).signOut,
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            color: theme.accentColor,
+            height: mediaQuery.size.height * 0.25,
+          ),
+        ],
       ),
     );
   }

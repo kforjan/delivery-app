@@ -23,7 +23,7 @@ class DeliveryApp extends StatelessWidget {
         ),
         Provider<Database>(
           create: (context) => FirestoreDatabase(),
-        )
+        ),
       ],
       child: MaterialApp(
         theme: buildTheme(),

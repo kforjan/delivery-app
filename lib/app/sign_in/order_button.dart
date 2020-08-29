@@ -17,12 +17,15 @@ class OrderButton extends StatelessWidget {
       onTap: model.isLoading
           ? null
           : () async {
+              print('STARTINGGGG buytton ');
               model.toggleLoading();
               await Provider.of<AuthBase>(context, listen: false).signIn();
               final user = await Provider.of<AuthBase>(context, listen: false)
                   .currentUser;
+              print('BUTTTONNNN ' + user.userId);
               await Provider.of<Database>(context, listen: false)
                   .addUserType(user.userId, UserType.order);
+              print('buton FINISHED!!!!!!!');
             },
       child: Container(
         color: Color.fromRGBO(234, 84, 85, 1),
