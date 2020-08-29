@@ -25,7 +25,6 @@ class LandingPage extends StatelessWidget {
               stream: _databse.getUserTypeStream(_user.userId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
-                  print(snapshot.data);
                   if (snapshot.data == UserType.deliver) {
                     return DeliverPage();
                   } else if (snapshot.data == UserType.order) {

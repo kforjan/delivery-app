@@ -6,9 +6,14 @@ import 'package:geodesy/geodesy.dart';
 import 'package:provider/provider.dart';
 
 class OrderTile extends StatelessWidget {
-  const OrderTile({Key key, @required this.order}) : super(key: key);
+  const OrderTile({
+    Key key,
+    @required this.order,
+    @required this.model,
+  }) : super(key: key);
 
   final Order order;
+  final DeliverModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +37,7 @@ class OrderTile extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => ConfirmDeliveryScreen(
+                  model: model,
                   order: order,
                 ),
               ),

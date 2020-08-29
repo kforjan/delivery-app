@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery_app/app/home/models/order.dart';
+import 'package:geolocator/geolocator.dart';
 import './api_path.dart';
 
 enum UserType {
@@ -11,7 +12,9 @@ abstract class Database {
   Future<void> addOrder(Order order);
   Future<void> addUserType(String userId, UserType userType);
   Stream<UserType> getUserTypeStream(String userId);
-  Stream<QuerySnapshot> getOrders();
+  Stream<List<Order>> getOrdersStream();
+  Future<void> updateDeliveryStatus(Order order);
+  void updateCurrentOrderLocation(Order order, Position position);
 }
 
 class FirestoreDatabase implements Database {
@@ -50,9 +53,43 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Stream<QuerySnapshot> getOrders() {
+  Stream<List<Order>> getOrdersStream() {
     final instance =
         Firestore.instance.collection(ApiPath.orders()).snapshots();
-    return instance;
+    return instance.map(
+      (event) => event.documents
+          .map((e) => Order.fromMap(e.data, e.documentID))
+          .toList(),
+    );
+  }
+
+  @override
+  void updateCurrentOrderLocation(Order order, Position position) {
+    Order newOrder = Order(
+      id: order.id,
+      mealCount: order.mealCount,
+      sideMealCount: order.sideMealCount,
+      drinkCount: order.drinkCount,
+      latitude: order.latitude,
+      longitude: order.longitude,
+      isActive: order.isActive,
+      currentLatitude: position.latitude,
+      currentLongitude: position.longitude,
+    );
+    addOrder(newOrder);
+  }
+
+  @override
+  Future<void> updateDeliveryStatus(Order order) async {
+    Order newOrder = Order(
+      id: order.id,
+      mealCount: order.mealCount,
+      sideMealCount: order.sideMealCount,
+      drinkCount: order.drinkCount,
+      latitude: order.latitude,
+      longitude: order.longitude,
+      isActive: true,
+    );
+    addOrder(newOrder);
   }
 }

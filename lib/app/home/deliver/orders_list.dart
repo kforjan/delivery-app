@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/database.dart';
@@ -32,9 +32,21 @@ class _OrdersListState extends State<OrdersList> {
     if (widget.model.position == null) {
       widget.model.updateLocation();
     }
-    return StreamBuilder<QuerySnapshot>(
-      stream: Provider.of<Database>(context).getOrders(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+    var geolocator = Geolocator();
+    var locationOptions =
+        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+    geolocator.getPositionStream(locationOptions).listen((event) {
+      widget.model.updatePosition(event);
+      if (widget.model.order != null) {
+        Provider.of<Database>(context, listen: false)
+            .updateCurrentOrderLocation(widget.model.order, event);
+      }
+    });
+
+    return StreamBuilder<List<Order>>(
+      stream: Provider.of<Database>(context).getOrdersStream(),
+      builder: (BuildContext context, AsyncSnapshot<List<Order>> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.data == null || widget.model.position == null) {
             return Center(
@@ -42,17 +54,13 @@ class _OrdersListState extends State<OrdersList> {
                 valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
               ),
             );
-          } else if (snapshot.data.documents.isEmpty) {
+          } else if (snapshot.data.isEmpty) {
             return Center(
               child: Text('There are no available orders at this time!'),
             );
           } else {
-            print(snapshot.data.documents[0].data);
-
             return _buildListView(
-              snapshot.data.documents
-                  .map((e) => Order.fromMap(e.data))
-                  .toList(),
+              snapshot.data,
             );
           }
         } else {
@@ -72,6 +80,7 @@ class _OrdersListState extends State<OrdersList> {
       itemCount: orders.length,
       itemBuilder: (BuildContext context, int index) {
         return OrderTile(
+          model: widget.model,
           order: orders[index],
         );
       },

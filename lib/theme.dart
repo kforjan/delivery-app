@@ -6,6 +6,7 @@ ThemeData buildTheme() {
     accentColor: Color.fromRGBO(45, 64, 89, 1),
     splashColor: Color.fromRGBO(222, 205, 195, 1),
     canvasColor: Color.fromRGBO(229, 229, 229, 1),
+    hintColor: Color.fromRGBO(110, 145, 126, 1),
     textTheme: buildTextTheme(),
   );
 }

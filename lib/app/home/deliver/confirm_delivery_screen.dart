@@ -1,21 +1,43 @@
+import 'package:delivery_app/app/home/deliver/deliver_model.dart';
 import 'package:delivery_app/app/home/models/order.dart';
+import 'package:delivery_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geodesy/geodesy.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
-class ConfirmDeliveryScreen extends StatelessWidget {
+class ConfirmDeliveryScreen extends StatefulWidget {
   const ConfirmDeliveryScreen({
     Key key,
     @required this.order,
+    @required this.model,
   }) : super(key: key);
 
   final Order order;
+  final DeliverModel model;
 
+  @override
+  _ConfirmDeliveryScreenState createState() => _ConfirmDeliveryScreenState();
+}
+
+class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
+
+    var geolocator = Geolocator();
+    var locationOptions =
+        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+    geolocator.getPositionStream(locationOptions).listen((event) {
+      widget.model.updatePosition(event);
+      if (widget.model.order != null) {
+        Provider.of<Database>(context, listen: false)
+            .updateCurrentOrderLocation(widget.model.order, event);
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.accentColor,
@@ -26,14 +48,19 @@ class ConfirmDeliveryScreen extends StatelessWidget {
         color: theme.accentColor,
         child: Column(
           children: [
-            Container(
-              height: mediaQuery.size.height * 0.3,
-              width: mediaQuery.size.width * 0.95,
-              child: buildMap(
-                context,
-                Position(
-                  latitude: order.latitude,
-                  longitude: order.longitude,
+            ClipRRect(
+              borderRadius: BorderRadius.all(
+                Radius.circular(25),
+              ),
+              child: Container(
+                height: mediaQuery.size.height * 0.3,
+                width: mediaQuery.size.width * 0.95,
+                child: buildMap(
+                  context,
+                  Position(
+                    latitude: widget.order.latitude,
+                    longitude: widget.order.longitude,
+                  ),
                 ),
               ),
             ),
@@ -44,23 +71,16 @@ class ConfirmDeliveryScreen extends StatelessWidget {
             SizedBox(
               height: mediaQuery.size.height * 0.27,
             ),
-            RaisedButton(
-              color: theme.primaryColor,
-              onPressed: () {
-                print(order.id);
-              },
-              child: Text(
-                'START DELIVERY',
-                style: TextStyle(color: theme.textTheme.bodyText2.color),
-              ),
-            ),
+            _buildSubmitButton(context),
             SizedBox(
               height: 10,
             ),
             Opacity(
               opacity: 0.4,
               child: Text(
-                '*user will be able to track your location after starting the delivery',
+                widget.order.isActive
+                    ? '*the user will be notified that the order has arrived'
+                    : '*user will be able to track your location after starting the delivery',
                 style: TextStyle(fontSize: 11),
               ),
             )
@@ -75,21 +95,21 @@ class ConfirmDeliveryScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          'Main meals: ${order.mealCount}',
+          'Main meals: ${widget.order.mealCount}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
         Text(
-          'Side meals: ${order.sideMealCount}',
+          'Side meals: ${widget.order.sideMealCount}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
         Text(
-          'Drinks: ${order.drinkCount}',
+          'Drinks: ${widget.order.drinkCount}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -97,6 +117,51 @@ class ConfirmDeliveryScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildSubmitButton(BuildContext context) {
+    if (widget.model.order != null) {
+      if (widget.model.order.id != widget.order.id &&
+          widget.model.isActiveDelivery) {
+        return Text('You alredy started another delivery.');
+      }
+    }
+    return widget.order.isActive
+        ? RaisedButton(
+            color: Theme.of(context).hintColor,
+            child: Text(
+              'FINISH DELIVERY',
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyText2.color,
+              ),
+            ),
+            onPressed: () {
+              widget.model.updateOrder(null);
+              widget.model.toggleIsActiveDelivery();
+              Navigator.pop(context);
+            },
+          )
+        : RaisedButton(
+            color: Theme.of(context).primaryColor,
+            child: Text(
+              'START DELIVERY',
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyText2.color,
+              ),
+            ),
+            onPressed: () async {
+              await Provider.of<Database>(context, listen: false)
+                  .updateDeliveryStatus(widget.order);
+              setState(() {
+                widget.order.isActive = true;
+                widget.model.updateOrder(widget.order);
+                widget.model.toggleIsActiveDelivery();
+                Provider.of<Database>(context, listen: false)
+                    .updateCurrentOrderLocation(
+                        widget.order, widget.model.position);
+              });
+            },
+          );
   }
 
   Widget buildMap(BuildContext context, Position position) {
