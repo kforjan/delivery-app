@@ -14,39 +14,42 @@ class LandingPage extends StatelessWidget {
     final _databse = Provider.of<Database>(context, listen: false);
     return StreamBuilder(
       stream: _auth.onAuthChanged,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          User _user = snapshot.data;
+      builder: (context, userSnapshot) {
+        if (userSnapshot.connectionState == ConnectionState.active) {
+          User _user = userSnapshot.data;
 
           if (_user == null) {
             return SignInPage.create(context);
           } else {
+            print(_user.userId);
             return StreamBuilder(
               stream: _databse.getUserTypeStream(_user.userId),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.active &&
-                    snapshot.data != null) {
-                  if (snapshot.data == UserType.deliver) {
+              builder: (context, typeSnapshot) {
+                print(typeSnapshot.data.toString() + '2');
+                if (typeSnapshot.connectionState == ConnectionState.active &&
+                    typeSnapshot.data != null) {
+                  print(typeSnapshot.data.toString() + '1');
+                  if (typeSnapshot.data == UserType.deliver) {
                     return DeliverPage();
-                  } else if (snapshot.data == UserType.order) {
+                  } else if (typeSnapshot.data == UserType.order) {
                     return OrderPage();
                   } else {
-                    return _buildLoadingScreen(context);
+                    return _buildLoadingScreen(context, '1');
                   }
                 } else {
-                  return _buildLoadingScreen(context);
+                  return _buildLoadingScreen(context, '2');
                 }
               },
             );
           }
         } else {
-          return _buildLoadingScreen(context);
+          return _buildLoadingScreen(context, '3');
         }
       },
     );
   }
 
-  Widget _buildLoadingScreen(BuildContext context) {
+  Widget _buildLoadingScreen(BuildContext context, String string) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -55,7 +58,7 @@ class LandingPage extends StatelessWidget {
             const CircularProgressIndicator(),
             const SizedBox(height: 50),
             FlatButton(
-              child: Text('Cancel'),
+              child: Text('Cancel' + string),
               onPressed: Provider.of<AuthBase>(context).signOut,
             )
           ],
@@ -63,4 +66,9 @@ class LandingPage extends StatelessWidget {
       ),
     );
   }
+}
+
+enum SignInFormType {
+  signIn,
+  register,
 }

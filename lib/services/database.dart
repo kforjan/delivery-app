@@ -20,34 +20,6 @@ abstract class Database {
 
 class FirestoreDatabase implements Database {
   @override
-  Future<void> addUserType(String userId, UserType userType) async {
-    final instance = Firestore.instance.document(ApiPath.user(userId));
-    instance.setData(
-      userType == UserType.order
-          ? {
-              'type': 'order',
-            }
-          : {
-              'type': 'deliver',
-            },
-    );
-  }
-
-  @override
-  Stream<UserType> getUserTypeStream(String userId) {
-    final instance = Firestore.instance.collection('users').document(userId);
-    final userTypeStream = instance
-        .snapshots()
-        .map((snapshot) => snapshot.data)
-        .map((data) => mapToUserType(data));
-    return userTypeStream;
-  }
-
-  UserType mapToUserType(Map<String, dynamic> data) {
-    return data['type'] == 'order' ? UserType.order : UserType.deliver;
-  }
-
-  @override
   Future<void> addOrder(Order order) async {
     final instance = Firestore.instance.document(ApiPath.order(order.id));
     print(order.id);
@@ -107,5 +79,33 @@ class FirestoreDatabase implements Database {
       currentLongitude: order.currentLongitude,
     );
     await addOrder(newOrder);
+  }
+
+  @override
+  Future<void> addUserType(String userId, UserType userType) async {
+    final instance = Firestore.instance.document(ApiPath.user(userId));
+    instance.setData(
+      userType == UserType.order
+          ? {
+              'type': 'order',
+            }
+          : {
+              'type': 'deliver',
+            },
+    );
+  }
+
+  @override
+  Stream<UserType> getUserTypeStream(String userId) {
+    final instance = Firestore.instance.collection('users').document(userId);
+    final userTypeStream = instance
+        .snapshots()
+        .map((snapshot) => snapshot.data)
+        .map((data) => mapToUserType(data));
+    return userTypeStream;
+  }
+
+  UserType mapToUserType(Map<String, dynamic> data) {
+    return data['type'] == 'order' ? UserType.order : UserType.deliver;
   }
 }

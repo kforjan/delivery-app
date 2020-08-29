@@ -1,49 +1,10 @@
-import 'package:flutter/foundation.dart';
-
-import '../../services/auth.dart';
-
-enum SignInFormType {
-  signIn,
-  register,
-}
+import 'package:flutter/widgets.dart';
 
 class SignInModel with ChangeNotifier {
-  SignInModel({
-    @required this.auth,
-    this.isLoading = false,
-  });
+  bool isLoading = false;
 
-  final AuthBase auth;
-  bool isLoading;
-
-  Future<void> registerOrder() async {
-    _updateWith(
-      isLoading: true,
-    );
-    try {
-      await auth.signIn();
-    } catch (error) {
-      _updateWith(isLoading: false);
-      rethrow;
-    }
-  }
-
-  Future<void> registerDeliver() async {
-    _updateWith(
-      isLoading: true,
-    );
-    try {
-      await auth.signIn();
-    } catch (error) {
-      _updateWith(isLoading: false);
-      rethrow;
-    }
-  }
-
-  void _updateWith({
-    bool isLoading,
-  }) {
-    this.isLoading = isLoading ?? this.isLoading;
+  toggleLoading() {
+    isLoading = !isLoading;
     notifyListeners();
   }
 }

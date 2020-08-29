@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/auth.dart';
 import 'deliver_button.dart';
 import 'order_button.dart';
 import 'sign_in_model.dart';
@@ -12,9 +11,8 @@ class SignInPage extends StatelessWidget {
   final SignInModel model;
 
   static Widget create(BuildContext context) {
-    final AuthBase auth = Provider.of<AuthBase>(context);
     return ChangeNotifierProvider<SignInModel>(
-      create: (context) => SignInModel(auth: auth),
+      create: (context) => SignInModel(),
       child: Consumer<SignInModel>(
         builder: (context, model, _) => SignInPage(
           model: model,
@@ -31,10 +29,10 @@ class SignInPage extends StatelessWidget {
         child: Stack(
           children: [
             DeliverButton(
-              onTap: model.registerDeliver,
+              model: model,
             ),
             OrderButton(
-              onTap: model.registerOrder,
+              model: model,
             ),
           ],
         ),

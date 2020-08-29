@@ -1,3 +1,4 @@
+import 'package:delivery_app/app/sign_in/sign_in_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -5,23 +6,24 @@ import '../../services/auth.dart';
 import '../../services/database.dart';
 
 class OrderButton extends StatelessWidget {
-  final Function onTap;
+  const OrderButton({Key key, this.model}) : super(key: key);
 
-  const OrderButton({
-    Key key,
-    @required this.onTap,
-  }) : super(key: key);
+  final SignInModel model;
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return InkWell(
-      onTap: () async {
-        await onTap();
-        final user =
-            await Provider.of<AuthBase>(context, listen: false).currentUser;
-        Provider.of<Database>(context, listen: false)
-            .addUserType(user.userId, UserType.order);
-      },
+      onTap: model.isLoading
+          ? null
+          : () async {
+              model.toggleLoading();
+              await Provider.of<AuthBase>(context, listen: false).signIn();
+              final user = await Provider.of<AuthBase>(context, listen: false)
+                  .currentUser;
+              await Provider.of<Database>(context, listen: false)
+                  .addUserType(user.userId, UserType.order);
+            },
       child: Container(
         color: Color.fromRGBO(234, 84, 85, 1),
         height: mediaQuery.size.height * 0.75,

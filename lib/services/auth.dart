@@ -40,7 +40,6 @@ class Auth implements AuthBase {
   Future<User> signIn() async {
     try {
       final _authResult = await _firebaseAuth.signInAnonymously();
-
       return _userFromFirebase(_authResult.user);
     } catch (error) {
       rethrow;
