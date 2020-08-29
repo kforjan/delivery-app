@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'app/landing_page/landing_page.dart';
 import 'services/auth.dart';
@@ -9,6 +11,11 @@ import 'theme.dart';
 class DeliveryApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Wakelock.enable();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MultiProvider(
       providers: [
         Provider<AuthBase>(
@@ -20,7 +27,7 @@ class DeliveryApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: buildTheme(),
-        title: 'DeliveyApp',
+        title: 'DeliveryApp',
         home: Scaffold(
           body: Center(
             child: LandingPage(),

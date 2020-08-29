@@ -11,10 +11,11 @@ enum UserType {
 abstract class Database {
   Future<void> addOrder(Order order);
   Future<void> addUserType(String userId, UserType userType);
+  Stream<Order> getOrder(Order order);
   Stream<UserType> getUserTypeStream(String userId);
   Stream<List<Order>> getOrdersStream();
   Future<void> updateDeliveryStatus(Order order);
-  void updateCurrentOrderLocation(Order order, Position position);
+  Future<void> updateCurrentOrderLocation(Order order, Position position);
 }
 
 class FirestoreDatabase implements Database {
@@ -49,14 +50,26 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> addOrder(Order order) async {
     final instance = Firestore.instance.document(ApiPath.order(order.id));
+    print(order.id);
+    print(order.currentLatitude);
     instance.setData(order.toMap());
   }
 
   @override
+  Stream<Order> getOrder(Order order) {
+    final orderSnapshot = Firestore.instance
+        .collection(ApiPath.orders())
+        .document(order.id)
+        .snapshots();
+    return orderSnapshot
+        .map((event) => Order.fromMap(event.data, event.documentID));
+  }
+
+  @override
   Stream<List<Order>> getOrdersStream() {
-    final instance =
+    final ordersSnapshot =
         Firestore.instance.collection(ApiPath.orders()).snapshots();
-    return instance.map(
+    return ordersSnapshot.map(
       (event) => event.documents
           .map((e) => Order.fromMap(e.data, e.documentID))
           .toList(),
@@ -64,7 +77,8 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  void updateCurrentOrderLocation(Order order, Position position) {
+  Future<void> updateCurrentOrderLocation(
+      Order order, Position position) async {
     Order newOrder = Order(
       id: order.id,
       mealCount: order.mealCount,
@@ -76,7 +90,7 @@ class FirestoreDatabase implements Database {
       currentLatitude: position.latitude,
       currentLongitude: position.longitude,
     );
-    addOrder(newOrder);
+    await addOrder(newOrder);
   }
 
   @override
@@ -89,7 +103,9 @@ class FirestoreDatabase implements Database {
       latitude: order.latitude,
       longitude: order.longitude,
       isActive: true,
+      currentLatitude: order.currentLatitude,
+      currentLongitude: order.currentLongitude,
     );
-    addOrder(newOrder);
+    await addOrder(newOrder);
   }
 }

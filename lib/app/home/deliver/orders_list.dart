@@ -26,16 +26,16 @@ class OrdersList extends StatefulWidget {
 }
 
 class _OrdersListState extends State<OrdersList> {
+  final geolocator = Geolocator();
+  final locationOptions =
+      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     if (widget.model.position == null) {
-      widget.model.updateLocation();
+      widget.model.setLocation();
     }
 
-    var geolocator = Geolocator();
-    var locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
     geolocator.getPositionStream(locationOptions).listen((event) {
       widget.model.updatePosition(event);
       if (widget.model.order != null) {

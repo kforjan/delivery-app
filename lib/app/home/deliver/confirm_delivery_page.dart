@@ -22,14 +22,14 @@ class ConfirmDeliveryScreen extends StatefulWidget {
 }
 
 class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
+  final geolocator = Geolocator();
+  final locationOptions =
+      LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
 
-    var geolocator = Geolocator();
-    var locationOptions =
-        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
     geolocator.getPositionStream(locationOptions).listen((event) {
       widget.model.updatePosition(event);
       if (widget.model.order != null) {
@@ -150,16 +150,18 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
               ),
             ),
             onPressed: () async {
-              await Provider.of<Database>(context, listen: false)
-                  .updateDeliveryStatus(widget.order);
               setState(() {
                 widget.order.isActive = true;
                 widget.model.updateOrder(widget.order);
                 widget.model.toggleIsActiveDelivery();
-                Provider.of<Database>(context, listen: false)
-                    .updateCurrentOrderLocation(
-                        widget.order, widget.model.position);
               });
+              await Provider.of<Database>(context, listen: false)
+                  .updateDeliveryStatus(widget.order);
+              await Provider.of<Database>(context, listen: false)
+                  .updateCurrentOrderLocation(
+                widget.order,
+                widget.model.position,
+              );
             },
           );
   }

@@ -24,7 +24,8 @@ class LandingPage extends StatelessWidget {
             return StreamBuilder(
               stream: _databse.getUserTypeStream(_user.userId),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.connectionState == ConnectionState.active &&
+                    snapshot.data != null) {
                   if (snapshot.data == UserType.deliver) {
                     return DeliverPage();
                   } else if (snapshot.data == UserType.order) {
@@ -51,8 +52,8 @@ class LandingPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 50),
+            const CircularProgressIndicator(),
+            const SizedBox(height: 50),
             FlatButton(
               child: Text('Cancel'),
               onPressed: Provider.of<AuthBase>(context).signOut,

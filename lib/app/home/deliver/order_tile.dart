@@ -1,4 +1,4 @@
-import 'package:delivery_app/app/home/deliver/confirm_delivery_screen.dart';
+import 'package:delivery_app/app/home/deliver/confirm_delivery_page.dart';
 import 'package:delivery_app/app/home/deliver/deliver_model.dart';
 import 'package:delivery_app/app/home/models/order.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +23,12 @@ class OrderTile extends StatelessWidget {
         ListTile(
           leading: Icon(
             Icons.location_on,
-            color: theme.primaryColor,
+            color: getActiveColor(theme),
           ),
           title: Text(
             _calculateDistanceFromOrder(context) + 'km away from you.',
             style: TextStyle(
-              color: theme.primaryColor,
+              color: getActiveColor(theme),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -72,5 +72,11 @@ class OrderTile extends StatelessWidget {
             ) /
             1000)
         .toStringAsFixed(2);
+  }
+
+  Color getActiveColor(ThemeData theme) {
+    return model.order == null
+        ? theme.primaryColor
+        : (model.order.id == order.id ? theme.hintColor : theme.primaryColor);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:delivery_app/app/home/models/order.dart';
+import 'package:delivery_app/app/home/order/tracking_page.dart';
 import 'package:delivery_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -94,8 +96,17 @@ class _OrderSelectionState extends State<OrderSelection> {
             ),
             onPressed: widget.model.isOrderable()
                 ? () {
+                    Order order = widget.model.generateOrder();
                     Provider.of<Database>(context, listen: false)
-                        .addOrder(widget.model.generateOrder());
+                        .addOrder(order);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TrackingPage(
+                          order: order,
+                        ),
+                      ),
+                    );
                   }
                 : null,
           ),

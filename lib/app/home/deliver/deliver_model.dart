@@ -8,7 +8,7 @@ class DeliverModel with ChangeNotifier {
   bool isActiveDelivery = false;
   Geolocator _geolocator = Geolocator();
 
-  Future<void> updateLocation() async {
+  Future<void> setLocation() async {
     Position position = await _geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     _updateWith(position: position);

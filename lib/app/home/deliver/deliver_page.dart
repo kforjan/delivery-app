@@ -38,9 +38,9 @@ class DeliverPage extends StatelessWidget {
         actions: [
           FlatButton(
             child: Text('YES'),
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              Provider.of<AuthBase>(context, listen: false).signOut();
+              await Provider.of<AuthBase>(context, listen: false).signOut();
             },
           ),
           FlatButton(

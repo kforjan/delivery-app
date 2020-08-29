@@ -45,6 +45,8 @@ class Order {
       drinkCount: orderData['drinkCount'],
       longitude: orderData['longitude'],
       latitude: orderData['latitude'],
+      currentLongitude: orderData['currentLongitude'],
+      currentLatitude: orderData['currentLatitude'],
     );
   }
 }
