@@ -31,6 +31,7 @@ class OrderTile extends StatelessWidget {
               color: getActiveColor(theme),
               fontWeight: FontWeight.bold,
             ),
+            overflow: TextOverflow.fade,
           ),
           onTap: () {
             Navigator.push(
@@ -46,6 +47,7 @@ class OrderTile extends StatelessWidget {
           subtitle: Text(
             'Main meals: ${order.mealCount} Side meals: ${order.sideMealCount} Drinks: ${order.drinkCount}',
             style: TextStyle(color: theme.textTheme.bodyText2.color),
+            overflow: TextOverflow.fade,
           ),
           trailing: Icon(
             Icons.arrow_forward_ios,

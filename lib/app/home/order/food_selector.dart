@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-class FoodSelection extends StatefulWidget {
-  final Function changeHandler;
+class FoodSelector extends StatefulWidget {
+  FoodSelector({
+    @required this.changeHandler,
+    @required this.imagePath,
+  });
 
-  FoodSelection({this.changeHandler});
+  final Function changeHandler;
+  final String imagePath;
 
   @override
-  _FoodSelectionState createState() => _FoodSelectionState();
+  _FoodSelectorState createState() => _FoodSelectorState();
 }
 
-class _FoodSelectionState extends State<FoodSelection> {
+class _FoodSelectorState extends State<FoodSelector> {
   int _currentValue = 0;
   @override
   Widget build(BuildContext context) {
@@ -20,9 +24,12 @@ class _FoodSelectionState extends State<FoodSelection> {
         ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(100)),
           child: Container(
-            height: mediaQuery.size.width * 0.25,
-            width: mediaQuery.size.width * 0.25,
-            color: Color.fromRGBO(229, 229, 229, 1),
+            height: mediaQuery.size.width * 0.27,
+            width: mediaQuery.size.width * 0.27,
+            child: Image.asset(
+              widget.imagePath,
+              fit: BoxFit.fill,
+            ),
           ),
         ),
         NumberPicker.integer(

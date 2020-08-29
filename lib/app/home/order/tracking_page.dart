@@ -21,26 +21,26 @@ class TrackingPage extends StatelessWidget {
       body: Container(
         width: double.infinity,
         color: theme.primaryColor,
-        child: SafeArea(
-          child: StreamBuilder(
-            stream: Provider.of<Database>(context, listen: false)
-                .getOrder(this.order),
-            builder: (cotnext, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active &&
-                  snapshot.data != null) {
-                Order order = snapshot.data;
-                print(order.id);
-                print(order.currentLongitude);
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    (order.isActive &&
-                            order.currentLongitude != null &&
-                            order.currentLatitude != null)
-                        ? Column(
+        child: StreamBuilder(
+          stream: Provider.of<Database>(context, listen: false)
+              .getOrder(this.order),
+          builder: (cotnext, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active &&
+                snapshot.data != null) {
+              Order order = snapshot.data;
+              print(order.id);
+              print(order.currentLongitude);
+              return Column(
+                children: [
+                  (order.isActive &&
+                          order.currentLongitude != null &&
+                          order.currentLatitude != null)
+                      ? SafeArea(
+                          child: Column(
                             children: [
+                              SizedBox(
+                                height: 20,
+                              ),
                               Container(
                                 width: double.infinity,
                                 height: 400,
@@ -66,43 +66,46 @@ class TrackingPage extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          )
-                        : _buildPlaceHolder(context),
-                  ],
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
+                          ),
+                        )
+                      : _buildPlaceHolder(context),
+                ],
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
       ),
     );
   }
 
   Widget _buildPlaceHolder(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(
-            Icons.not_listed_location,
-            size: 150,
-            color: Theme.of(context).accentColor,
-          ),
-          SizedBox(
-            height: 80,
-          ),
-          Text(
-            'Your order is being prepared.\nThank you for your patience!',
-            style: TextStyle(
-              color: Theme.of(context).textTheme.bodyText2.color,
-              fontSize: 25,
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              Icons.not_listed_location,
+              size: 150,
+              color: Theme.of(context).accentColor,
             ),
-          ),
-        ],
+            SizedBox(
+              height: 80,
+            ),
+            Text(
+              'Your order is being prepared.\nThank you for your patience!',
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyText2.color,
+                fontSize: 25,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

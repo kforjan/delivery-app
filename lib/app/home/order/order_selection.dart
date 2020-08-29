@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
-import 'food_selection.dart';
+import 'food_selector.dart';
 import 'order_model.dart';
 
 class OrderSelection extends StatefulWidget {
@@ -42,25 +42,31 @@ class _OrderSelectionState extends State<OrderSelection> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              FoodSelection(
+              FoodSelector(
                 changeHandler: widget.model.updateMealCount,
+                imagePath: 'assets/images/main-meal.jpg',
               ),
-              FoodSelection(
+              FoodSelector(
                 changeHandler: widget.model.updateSideMealCount,
+                imagePath: 'assets/images/side-meal.jpg',
               ),
-              FoodSelection(
+              FoodSelector(
                 changeHandler: widget.model.updateDrinkCount,
+                imagePath: 'assets/images/drink.jpg',
               ),
             ],
           ),
           SizedBox(
             height: mediaQuery.size.height * 0.05,
           ),
+          Divider(
+            color: theme.accentColor,
+          ),
           ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(40)),
             child: Container(
               height: mediaQuery.size.height * 0.25,
-              width: mediaQuery.size.width * 0.6,
+              width: mediaQuery.size.width * 0.75,
               child: widget.model.located
                   ? buildMap(context, widget.model.position)
                   : FlatButton(
@@ -82,33 +88,45 @@ class _OrderSelectionState extends State<OrderSelection> {
                     ),
             ),
           ),
+          Divider(
+            color: theme.accentColor,
+          ),
           SizedBox(
             height: mediaQuery.size.height * 0.05,
           ),
-          RaisedButton(
-            color: theme.accentColor,
-            child: Text(
-              'Order now!',
-              style: TextStyle(
-                color: theme.textTheme.bodyText2.color,
-                fontSize: 18,
+          ButtonTheme(
+            height: mediaQuery.size.height * 0.07,
+            minWidth: mediaQuery.size.width * 0.4,
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(35),
+                ),
               ),
-            ),
-            onPressed: widget.model.isOrderable()
-                ? () {
-                    Order order = widget.model.generateOrder();
-                    Provider.of<Database>(context, listen: false)
-                        .addOrder(order);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TrackingPage(
-                          order: order,
+              color: theme.accentColor,
+              child: Text(
+                'Order now!',
+                style: TextStyle(
+                  color: theme.textTheme.bodyText2.color,
+                  fontSize: 18,
+                ),
+              ),
+              onPressed: widget.model.isOrderable()
+                  ? () {
+                      Order order = widget.model.generateOrder();
+                      Provider.of<Database>(context, listen: false)
+                          .addOrder(order);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TrackingPage(
+                            order: order,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                : null,
+                      );
+                    }
+                  : null,
+            ),
           ),
         ],
       ),

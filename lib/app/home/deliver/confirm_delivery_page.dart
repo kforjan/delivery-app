@@ -91,28 +91,50 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
   }
 
   Widget _buildOrderCountInfo() {
+    final mediaQuery = MediaQuery.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Text(
-          'Main meals: ${widget.order.mealCount}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+        Container(
+          width: mediaQuery.size.width * 0.25,
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              'Main meals: ${widget.order.mealCount}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              overflow: TextOverflow.fade,
+            ),
           ),
         ),
-        Text(
-          'Side meals: ${widget.order.sideMealCount}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+        Container(
+          width: mediaQuery.size.width * 0.25,
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              'Side meals: ${widget.order.sideMealCount}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              overflow: TextOverflow.fade,
+            ),
           ),
         ),
-        Text(
-          'Drinks: ${widget.order.drinkCount}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+        Container(
+          width: mediaQuery.size.width * 0.16,
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              'Drinks: ${widget.order.drinkCount}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              overflow: TextOverflow.fade,
+            ),
           ),
         ),
       ],
