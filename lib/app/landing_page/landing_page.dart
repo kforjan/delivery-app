@@ -21,7 +21,6 @@ class LandingPage extends StatelessWidget {
           if (_user == null) {
             return SignInPage.create(context);
           } else {
-            print(_user.userId);
             return StreamBuilder(
               stream: _databse.getUserTypeStream(_user.userId),
               builder: (context, typeSnapshot) {

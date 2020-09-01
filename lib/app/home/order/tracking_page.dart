@@ -9,101 +9,142 @@ import 'package:provider/provider.dart';
 class TrackingPage extends StatelessWidget {
   const TrackingPage({
     Key key,
-    @required this.order,
+    @required this.orderId,
   }) : super(key: key);
 
-  final Order order;
+  final String orderId;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        color: theme.primaryColor,
-        child: StreamBuilder(
-          stream: Provider.of<Database>(context, listen: false)
-              .getOrder(this.order),
-          builder: (cotnext, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active &&
-                snapshot.data != null) {
-              Order order = snapshot.data;
-              print(order.id);
-              print(order.currentLongitude);
-              return Column(
-                children: [
-                  (order.isActive &&
-                          order.currentLongitude != null &&
-                          order.currentLatitude != null)
-                      ? SafeArea(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: 400,
-                                child: _buildMap(
-                                  context,
-                                  Position(
-                                    longitude: order.currentLongitude,
-                                    latitude: order.currentLatitude,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          color: theme.primaryColor,
+          child: StreamBuilder(
+            stream: Provider.of<Database>(context, listen: false)
+                .getOrder(this.orderId),
+            builder: (cotnext, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active &&
+                  snapshot.data != null) {
+                Order order = snapshot.data;
+                print('isdone ' + order.isDone.toString());
+                print('isactive ' + order.isActive.toString());
+                print('long ' + order.longitude.toString());
+                print('lat ' + order.latitude.toString());
+                return Column(
+                  children: [
+                    (order.isActive &&
+                            order.currentLongitude != null &&
+                            order.currentLatitude != null)
+                        ? SafeArea(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 400,
+                                  child: _buildMap(
+                                    context,
+                                    Position(
+                                      longitude: order.currentLongitude,
+                                      latitude: order.currentLatitude,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 80,
-                              ),
-                              Text(
-                                'Your order is being delivered.\nYou can track your order!',
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2
-                                      .color,
-                                  fontSize: 25,
+                                SizedBox(
+                                  height: 80,
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : _buildPlaceHolder(context),
-                ],
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
+                                Text(
+                                  'Your order is being delivered.\nYou can track your order!',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2
+                                        .color,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : _buildPlaceHolder(context, order),
+                  ],
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildPlaceHolder(BuildContext context) {
+  Widget _buildPlaceHolder(BuildContext context, Order order) {
     return Container(
       height: MediaQuery.of(context).size.height,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(
-              Icons.not_listed_location,
-              size: 150,
-              color: Theme.of(context).accentColor,
-            ),
+            order.isDone
+                ? Icon(
+                    Icons.check_circle,
+                    size: 150,
+                    color: Theme.of(context).accentColor,
+                  )
+                : Icon(
+                    Icons.not_listed_location,
+                    size: 150,
+                    color: Theme.of(context).accentColor,
+                  ),
             SizedBox(
               height: 80,
             ),
-            Text(
-              'Your order is being prepared.\nThank you for your patience!',
-              style: TextStyle(
-                color: Theme.of(context).textTheme.bodyText2.color,
-                fontSize: 25,
-              ),
-            ),
+            order.isDone
+                ? Text(
+                    'Your order is at your location.\n Enjoy your meal!',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2.color,
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                : Text(
+                    'Your order is being prepared.\nThank you for your patience!',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2.color,
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+            order.isDone
+                ? SizedBox(
+                    height: 50,
+                  )
+                : Container(),
+            order.isDone
+                ? RaisedButton(
+                    onPressed: () {
+                      Provider.of<Database>(context, listen: false)
+                          .deleteOrder(orderId);
+                      Navigator.of(context).pop();
+                    },
+                    color: Theme.of(context).accentColor,
+                    child: Text(
+                      'Close',
+                      style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyText2.color),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

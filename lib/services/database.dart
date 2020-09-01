@@ -11,27 +11,27 @@ enum UserType {
 abstract class Database {
   Future<void> addOrder(Order order);
   Future<void> addUserType(String userId, UserType userType);
-  Stream<Order> getOrder(Order order);
+  Stream<Order> getOrder(String orderId);
   Stream<UserType> getUserTypeStream(String userId);
   Stream<List<Order>> getOrdersStream();
+  void deleteOrder(String orderId);
   Future<void> updateDeliveryStatus(Order order);
   Future<void> updateCurrentOrderLocation(Order order, Position position);
+  Future<void> finishDelivery(Order order);
 }
 
 class FirestoreDatabase implements Database {
   @override
   Future<void> addOrder(Order order) async {
     final instance = Firestore.instance.document(ApiPath.order(order.id));
-    print(order.id);
-    print(order.currentLatitude);
     instance.setData(order.toMap());
   }
 
   @override
-  Stream<Order> getOrder(Order order) {
+  Stream<Order> getOrder(String orderId) {
     final orderSnapshot = Firestore.instance
         .collection(ApiPath.orders())
-        .document(order.id)
+        .document(orderId)
         .snapshots();
     return orderSnapshot
         .map((event) => Order.fromMap(event.data, event.documentID));
@@ -48,6 +48,10 @@ class FirestoreDatabase implements Database {
     );
   }
 
+  void deleteOrder(String orderId) {
+    Firestore.instance.collection(ApiPath.orders()).document(orderId).delete();
+  }
+
   @override
   Future<void> updateCurrentOrderLocation(
       Order order, Position position) async {
@@ -59,6 +63,7 @@ class FirestoreDatabase implements Database {
       latitude: order.latitude,
       longitude: order.longitude,
       isActive: order.isActive,
+      isDone: order.isDone,
       currentLatitude: position.latitude,
       currentLongitude: position.longitude,
     );
@@ -75,6 +80,24 @@ class FirestoreDatabase implements Database {
       latitude: order.latitude,
       longitude: order.longitude,
       isActive: true,
+      isDone: order.isDone,
+      currentLatitude: order.currentLatitude,
+      currentLongitude: order.currentLongitude,
+    );
+    await addOrder(newOrder);
+  }
+
+  @override
+  Future<void> finishDelivery(Order order) async {
+    Order newOrder = Order(
+      id: order.id,
+      mealCount: order.mealCount,
+      sideMealCount: order.sideMealCount,
+      drinkCount: order.drinkCount,
+      latitude: order.latitude,
+      longitude: order.longitude,
+      isActive: order.isActive,
+      isDone: true,
       currentLatitude: order.currentLatitude,
       currentLongitude: order.currentLongitude,
     );

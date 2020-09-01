@@ -120,7 +120,7 @@ class _OrderSelectionState extends State<OrderSelection> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TrackingPage(
-                            order: order,
+                            orderId: order.id,
                           ),
                         ),
                       );

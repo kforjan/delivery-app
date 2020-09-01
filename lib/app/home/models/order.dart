@@ -4,6 +4,7 @@ class Order {
   Order({
     @required this.id,
     @required this.isActive,
+    @required this.isDone,
     @required this.mealCount,
     @required this.sideMealCount,
     @required this.drinkCount,
@@ -15,6 +16,7 @@ class Order {
 
   final String id;
   bool isActive;
+  bool isDone;
   final int mealCount;
   final int sideMealCount;
   final int drinkCount;
@@ -27,6 +29,7 @@ class Order {
     return {
       'mealCount': this.mealCount,
       'isActive': this.isActive,
+      'isDone': this.isDone,
       'sideMealCount': this.sideMealCount,
       'drinkCount': this.drinkCount,
       'longitude': this.longitude,
@@ -40,6 +43,7 @@ class Order {
     return Order(
       id: id,
       isActive: orderData['isActive'],
+      isDone: orderData['isDone'],
       mealCount: orderData['mealCount'],
       sideMealCount: orderData['sideMealCount'],
       drinkCount: orderData['drinkCount'],

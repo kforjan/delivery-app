@@ -157,9 +157,11 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
                 color: Theme.of(context).textTheme.bodyText2.color,
               ),
             ),
-            onPressed: () {
-              widget.model.updateOrder(null);
+            onPressed: () async {
+              await Provider.of<Database>(context, listen: false)
+                  .finishDelivery(widget.order);
               widget.model.toggleIsActiveDelivery();
+              widget.model.updateOrder(null);
               Navigator.pop(context);
             },
           )
