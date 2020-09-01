@@ -22,7 +22,7 @@ class _FoodSelectorState extends State<FoodSelector> {
     return Column(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(100)),
+          borderRadius: BorderRadius.all(Radius.circular(25)),
           child: Container(
             height: mediaQuery.size.width * 0.27,
             width: mediaQuery.size.width * 0.27,

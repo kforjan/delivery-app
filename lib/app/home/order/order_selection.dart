@@ -111,7 +111,7 @@ class _OrderSelectionState extends State<OrderSelection> {
                   fontSize: 18,
                 ),
               ),
-              onPressed: widget.model.isOrderable()
+              onPressed: widget.model.isOrderable
                   ? () {
                       Order order = widget.model.generateOrder();
                       Provider.of<Database>(context, listen: false)

@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class SignInModel with ChangeNotifier {
+class RoleSelection with ChangeNotifier {
   bool isLoading = false;
 
   toggleLoading() {

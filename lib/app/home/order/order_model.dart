@@ -32,7 +32,7 @@ class OrderModel with ChangeNotifier {
     _updateWith(located: !this.located);
   }
 
-  bool isOrderable() {
+  bool get isOrderable {
     return located == true &&
         (mealCount != 0 || sideMealCount != 0 || drinkCount != 0);
   }
