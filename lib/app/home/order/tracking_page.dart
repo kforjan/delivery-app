@@ -131,13 +131,16 @@ class TrackingPage extends StatelessWidget {
                   )
                 : Container(),
             order.isDone
-                ? RaisedButton(
+                ? ElevatedButton(
                     onPressed: () {
                       Provider.of<Database>(context, listen: false)
                           .deleteOrder(orderId);
                       Navigator.of(context).pop();
                     },
-                    color: Theme.of(context).accentColor,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).accentColor),
+                    ),
                     child: Text(
                       'Close',
                       style: TextStyle(

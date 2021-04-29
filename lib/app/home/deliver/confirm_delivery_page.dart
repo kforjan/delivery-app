@@ -149,13 +149,16 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
       }
     }
     return widget.order.isActive
-        ? RaisedButton(
-            color: Theme.of(context).hintColor,
+        ? ElevatedButton(
             child: Text(
               'FINISH DELIVERY',
               style: TextStyle(
                 color: Theme.of(context).textTheme.bodyText2.color,
               ),
+            ),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).hintColor),
             ),
             onPressed: () async {
               await Provider.of<Database>(context, listen: false)
@@ -165,13 +168,16 @@ class _ConfirmDeliveryScreenState extends State<ConfirmDeliveryScreen> {
               Navigator.pop(context);
             },
           )
-        : RaisedButton(
-            color: Theme.of(context).primaryColor,
+        : ElevatedButton(
             child: Text(
               'START DELIVERY',
               style: TextStyle(
                 color: Theme.of(context).textTheme.bodyText2.color,
               ),
+            ),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Theme.of(context).hintColor),
             ),
             onPressed: () async {
               setState(() {

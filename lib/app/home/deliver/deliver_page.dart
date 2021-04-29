@@ -36,14 +36,14 @@ class DeliverPage extends StatelessWidget {
         title: Text('All data will be lost if you log off.'),
         content: Text('Are you sure you want to continue?'),
         actions: [
-          FlatButton(
+          ElevatedButton(
             child: Text('YES'),
             onPressed: () async {
               Navigator.pop(context);
               await Provider.of<AuthBase>(context, listen: false).signOut();
             },
           ),
-          FlatButton(
+          ElevatedButton(
             child: Text('NO'),
             onPressed: () {
               Navigator.pop(context);

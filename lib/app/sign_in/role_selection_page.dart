@@ -3,18 +3,18 @@ import 'package:provider/provider.dart';
 
 import 'deliver_button.dart';
 import 'order_button.dart';
-import 'sign_in_model.dart';
+import 'role_selection_model.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({@required this.model});
+class RoleSelectionPage extends StatelessWidget {
+  const RoleSelectionPage({@required this.model});
 
-  final SignInModel model;
+  final RoleSelectionModel model;
 
   static Widget create(BuildContext context) {
-    return ChangeNotifierProvider<SignInModel>(
-      create: (context) => SignInModel(),
-      child: Consumer<SignInModel>(
-        builder: (context, model, _) => SignInPage(
+    return ChangeNotifierProvider<RoleSelectionModel>(
+      create: (context) => RoleSelectionModel(),
+      child: Consumer<RoleSelectionModel>(
+        builder: (context, model, _) => RoleSelectionPage(
           model: model,
         ),
       ),

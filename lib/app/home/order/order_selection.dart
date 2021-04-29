@@ -69,7 +69,7 @@ class _OrderSelectionState extends State<OrderSelection> {
               width: mediaQuery.size.width * 0.75,
               child: widget.model.located
                   ? buildMap(context, widget.model.position)
-                  : FlatButton(
+                  : ElevatedButton(
                       child: ListTile(
                         leading: Icon(
                           Icons.location_on,
@@ -97,13 +97,17 @@ class _OrderSelectionState extends State<OrderSelection> {
           ButtonTheme(
             height: mediaQuery.size.height * 0.07,
             minWidth: mediaQuery.size.width * 0.4,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(35),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(theme.accentColor),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(35),
+                    ),
+                  ),
                 ),
               ),
-              color: theme.accentColor,
               child: Text(
                 'Order now!',
                 style: TextStyle(

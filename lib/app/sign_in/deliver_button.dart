@@ -1,14 +1,15 @@
-import 'package:delivery_app/app/sign_in/sign_in_model.dart';
+import 'package:delivery_app/app/sign_in/role_selection_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/auth.dart';
 import '../../services/database.dart';
+import 'role_selection_model.dart';
 
 class DeliverButton extends StatelessWidget {
   const DeliverButton({Key key, this.model}) : super(key: key);
 
-  final SignInModel model;
+  final RoleSelectionModel model;
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import '../../services/auth.dart';
 import '../../services/database.dart';
 import '../home/deliver/deliver_page.dart';
 import '../home/order/order_page.dart';
-import '../sign_in/sign_in_page.dart';
+import '../sign_in/role_selection_page.dart';
 
 class LandingPage extends StatelessWidget {
   @override
@@ -19,7 +19,7 @@ class LandingPage extends StatelessWidget {
           User _user = userSnapshot.data;
 
           if (_user == null) {
-            return SignInPage.create(context);
+            return RoleSelectionPage.create(context);
           } else {
             return StreamBuilder(
               stream: _databse.getUserTypeStream(_user.userId),
@@ -60,7 +60,7 @@ class LandingPage extends StatelessWidget {
                         AlwaysStoppedAnimation<Color>(theme.accentColor),
                   ),
                   const SizedBox(height: 50),
-                  FlatButton(
+                  TextButton(
                     child: Text(
                       'Cancel',
                       style: TextStyle(color: theme.accentColor),
