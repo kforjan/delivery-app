@@ -73,7 +73,7 @@ class _OrderSelectionState extends State<OrderSelection> {
                       child: ListTile(
                         leading: Icon(
                           Icons.location_on,
-                          color: theme.accentColor,
+                          color: theme.primaryColor,
                         ),
                         title: Text(
                           'Find my location',
@@ -82,6 +82,9 @@ class _OrderSelectionState extends State<OrderSelection> {
                           ),
                         ),
                       ),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(theme.accentColor)),
                       onPressed: () {
                         widget.model.updateLocation();
                       },
