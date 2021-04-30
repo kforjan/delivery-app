@@ -5,7 +5,7 @@ Main focus was on location tracking and exchanging location data between devices
 
 ## About
 
-The main focus of this project was on location tracking and exchanging location data between devices. The application connects two users and enables the exchange of their current locations with one another. Main communication between devices is achieved with the help of Firebase services. Firebase stores the current location of the delivery every few seconds after it has started and shares it with it's customer whose ID is recorded in the order's information.
+The main focus of this project was on location tracking and exchanging location data between devices. The application connects two users and enables the exchange of their current locations with one another. Main communication between devices is achieved with the help of Firebase services. Firebase stores the current location of the delivery every few seconds after it has started and shares it with it's customer whose ID is recorded in the order's information. Connecting with Firebase is done with the cloud_firestore package. Cloud_firestore makes accessing data from Firebase simple by using built in methods that provide Stream objects which yield requested data. State management used in this project is Provider with ChangeNotifier.
 
 ## Used packages
 
