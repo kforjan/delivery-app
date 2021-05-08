@@ -9,13 +9,13 @@ The main focus of this project was on location tracking and exchanging location 
 
 ## Used packages
 
-* [provider](https://pub.dev/packages/provider)
-* [firebase_auth](https://pub.dev/packages/firebase_auth)
-* [cloud_firestore](https://pub.dev/packages/cloud_firestore)
-* [geolocator](https://pub.dev/packages/geolocator)
-* [geodesy](https://pub.dev/packages/geodesy)
-* [flutter_map](https://pub.dev/packages/flutter_map)
-* [wakeclock](https://pub.dev/packages/wakelock)
+* [provider](https://pub.dev/packages/provider) &nbsp; - &nbsp; state management
+* [firebase_auth](https://pub.dev/packages/firebase_auth) &nbsp; - working with Firebase Authentication API
+* [cloud_firestore](https://pub.dev/packages/cloud_firestore) &nbsp; - working with Cloud Firestore API
+* [geolocator](https://pub.dev/packages/geolocator) &nbsp; - platform specific location services
+* [geodesy](https://pub.dev/packages/geodesy) &nbsp; - geodesic and trigonometric calculations 
+* [flutter_map](https://pub.dev/packages/flutter_map) &nbsp; - provides a widget for displaying a map
+* [wakeclock](https://pub.dev/packages/wakelock) &nbsp; - preventing the screen from sleeping
 
 ## Features
 
