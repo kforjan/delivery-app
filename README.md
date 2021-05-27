@@ -47,10 +47,11 @@ The main focus of this project was on location tracking and exchanging location 
   ```
 
 ## Preview
-
+The 2 phones are running at the same time, phone on the left is ordering and the phone on the right is delivering.
 ![Preview of both delivery and order device functionality](https://s3.gifyu.com/images/delivery-app-preview.gif)
 
 *note: distance from delivery and delivery location is 0.00km because emulators always have the same coordinates*
+
 
 ## Possible improvements
 
